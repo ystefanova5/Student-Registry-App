@@ -5,7 +5,7 @@ name: Build and Test
 
 on:
     push:
-        branches: ["main"]
+        # branches: ["main"] # if we remove this the workflow will start on "push" to any branch
     pull_request:
         branches: ["main"]
     # To run the workflow manually:
@@ -25,7 +25,7 @@ jobs:
             - name: Install dependancies
               run: npm install
             - name: Run npm security tests
-              run: npm test-npm-security
+              run: npm run test-npm-security
 
     test-integration:
         # With the following line we'll only run this workflow if the test-security job passes
