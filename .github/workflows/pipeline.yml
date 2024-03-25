@@ -12,25 +12,34 @@ on:
     workflow_dispatch:
 
 jobs:
-    build-test:
+    test-security:
         runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                node-version: [14.x, 16.x, 18.x]
-                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
         steps:
             - name: Checkout the repository
               uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Use Node.js 20
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: 20.x
+                  cache: "npm"
+            - name: Install dependancies
+              run: npm install
+            - name: Run npm security tests
+              run: npm test-npm-security
+
+    test-integration:
+        # With the following line we'll only run this workflow if the test-security job passes
+        needs: test-security
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v3
+            - name: Use Node.js 20
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20.x
                   cache: "npm"
             - name: Install dependancies
               run: npm install
             - name: Run integration test
               run: npm test
-            - name: Run npm security tests
-              run: npm test-npm-security
