@@ -5,7 +5,7 @@ name: Build and Test
 
 on:
     push:
-        # branches: ["main"] # if we remove this the workflow will start on "push" to any branch
+        branches: ["main"] # if we remove this line the workflow will start on "push" to any branch
     pull_request:
         branches: ["main"]
     # To run the workflow manually:
